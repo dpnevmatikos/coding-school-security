@@ -19,6 +19,8 @@
             <form action="@Url.Action("Update", "Person")" method="post">
                 @Html.HiddenFor(m => m.Id)
                 @Html.TextBoxFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Password, new { data_val = "true", data_val_required = "*", placeholder = "password" })
+                @Html.ValidationMessageFor(m => m.Password)
                 <button type="submit">Update Person</button>
             </form>
         </div>
@@ -29,7 +31,12 @@
             <label>Update WITH token</label>
             <form action="@Url.Action("UpdateWithToken", "Person")" method="post">
                 @Html.HiddenFor(m => m.Id)
+
                 @Html.TextBoxFor(m => m.Name)
+
+                @Html.TextBoxFor(m => m.Password, new { data_val = "true", data_val_required = "*" })
+
+                @Html.ValidationMessageFor(m => m.Password)
                 <button type="submit">Update Person</button>
             </form>
         </div>

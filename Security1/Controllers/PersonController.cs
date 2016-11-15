@@ -73,6 +73,7 @@
                     System.Data.CommandBehavior.Default);
 
                 var personList = new List<Models.Person>();
+
                 while (dreader.Read())
                 {
                     personList.Add(new Models.Person()

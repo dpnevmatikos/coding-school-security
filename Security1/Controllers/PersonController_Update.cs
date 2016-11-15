@@ -1,13 +1,9 @@
 ﻿namespace Security1.Controllers
 {
-    using System;
-    using System.Linq;
-    using System.Web;
     using System.Net;
     using System.Web.Mvc;
     using System.Threading.Tasks;
     using System.Data.SqlClient;
-    using System.Collections.Generic;
 
     /// <summary>
     /// 
@@ -53,12 +49,21 @@
         [HttpPost]
         public async Task<ActionResult> Update(Models.Person person)
         {
+            if (string.IsNullOrWhiteSpace(person.Password))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+
+            var simpleAES = new SimplerAES();
+            var encryptedPassword = simpleAES.Encrypt(person.Password);
+
             using (var conn = GetDbConnection())
             {
                 var command = conn.CreateCommand();
-                command.CommandText = "update dbo.person set name = @name where id=@id";
+                command.CommandText = "update dbo.person set name = @name, password = @password where id=@id";
                 command.Parameters.AddWithValue("id", person.Id);
                 command.Parameters.AddWithValue("name", person.Name);
+                command.Parameters.AddWithValue("password", encryptedPassword);
 
                 var rows = await command.ExecuteNonQueryAsync();
 

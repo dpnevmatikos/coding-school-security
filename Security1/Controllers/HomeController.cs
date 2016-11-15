@@ -5,7 +5,7 @@
     public class HomeController : Controller
     {
         /// <summary>
-        /// Works in firefox but not in chrome
+        /// XSS example. (Works in firefox but not in chrome)
         /// </summary>
         /// <param name="xss"></param>
         /// <returns></returns>

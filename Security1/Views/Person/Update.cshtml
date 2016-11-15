@@ -1,0 +1,38 @@
+﻿@model Security1.Models.Person
+
+@{
+    ViewBag.Title = "Update";
+}
+
+@if (Model == null)
+{
+    <h2>Person not found</h2>
+    return;
+}
+
+<h2>Update</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <label>Update without token</label>
+            <form action="@Url.Action("Update", "Person")" method="post">
+                @Html.HiddenFor(m => m.Id)
+                @Html.TextBoxFor(m => m.Name)
+                <button type="submit">Update Person</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <label>Update WITH token</label>
+            <form action="@Url.Action("UpdateWithToken", "Person")" method="post">
+                @Html.HiddenFor(m => m.Id)
+                @Html.TextBoxFor(m => m.Name)
+                <button type="submit">Update Person</button>
+            </form>
+        </div>
+    </div>
+</div>
+

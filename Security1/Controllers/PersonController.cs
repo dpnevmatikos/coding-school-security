@@ -61,7 +61,7 @@
         {
             if (string.IsNullOrWhiteSpace(id))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.OK);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
 
             using (var conn = GetDbConnection())

@@ -7,14 +7,14 @@
         /// <summary>
         /// XSS example. (Works in firefox but not in chrome)
         /// </summary>
-        /// <param name="xss"></param>
+        /// <param name="username"></param>
         /// <returns></returns>
         [HttpGet]
         [ValidateInput(false)]
-        public ActionResult Index(string xss)
+        public ActionResult Index(string username)
         {
             return View("index", new Models.Home() {
-                 HomeText = xss
+                 HomeText = username
             });
         }
     }

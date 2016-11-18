@@ -1,15 +1,22 @@
 ﻿namespace Security1.Controllers
 {
     using System.Net;
+    using System.Linq;
     using System.Web.Mvc;
     using System.Threading.Tasks;
     using System.Data.SqlClient;
+    using Filters;
 
     /// <summary>
     /// 
     /// </summary>
     public partial class PersonController
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        private const string AuthCookieName = "authcookie";
+
         /// <summary>
         /// 
         /// </summary>
@@ -38,6 +45,9 @@
                 };
             }
 
+            HttpContext.Response.SetCookie(
+                new System.Web.HttpCookie(AuthCookieName, person.Name));
+
             return View(person);
         }
 
@@ -46,9 +56,15 @@
         /// </summary>
         /// <param name="person"></param>
         /// <returns></returns>
+        [AllowCrossSiteRequests]
         [HttpPost]
         public async Task<ActionResult> Update(Models.Person person)
         {
+            if (!HttpContext.Request.Cookies.AllKeys.Contains(AuthCookieName))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized);
+            }
+
             if (string.IsNullOrWhiteSpace(person.Password))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
@@ -60,7 +76,8 @@
             using (var conn = GetDbConnection())
             {
                 var command = conn.CreateCommand();
-                command.CommandText = "update dbo.person set name = @name, password = @password where id=@id";
+                command.CommandText = @"update dbo.person set
+                    name = @name, password = @password where id=@id";
                 command.Parameters.AddWithValue("id", person.Id);
                 command.Parameters.AddWithValue("name", person.Name);
                 command.Parameters.AddWithValue("password", encryptedPassword);
@@ -80,17 +97,7 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UpdateWithToken(Models.Person person)
         {
-            using (var conn = GetDbConnection())
-            {
-                var command = conn.CreateCommand();
-                command.CommandText = "update dbo.person set name = @name where id=@id";
-                command.Parameters.AddWithValue("id", person.Id);
-                command.Parameters.AddWithValue("name", person.Name);
-
-                var rows = await command.ExecuteNonQueryAsync();
-
-                return Json($"Rows affected = {rows}");
-            }
+            return await Update(person);
         }
     }
 }

@@ -119,6 +119,8 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="XSS\CORS.ajax.js" />
+    <Content Include="XSS\test.html" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -132,6 +134,7 @@
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\PersonController_Accounts.cs" />
     <Compile Include="Controllers\PersonController_Update.cs" />
+    <Compile Include="Filters\AllowCrossSiteRequestsAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

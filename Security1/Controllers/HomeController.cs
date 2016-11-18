@@ -1,5 +1,6 @@
 ﻿namespace Security1.Controllers
 {
+    using System.Web;
     using System.Web.Mvc;
 
     public class HomeController : Controller
@@ -16,6 +17,7 @@
             return View("index", new Models.Home() {
                  HomeText = username
             });
+            //username = HttpUtility.HtmlEncode(username);
         }
     }
 }
